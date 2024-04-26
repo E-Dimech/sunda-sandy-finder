@@ -6,7 +6,7 @@ const mapRoutes = require("./mapRoutes");
 app.use("/api", mapRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello from the backend!");
+  res.send("Hell00o from the backend!");
 });
 
 app.listen(port, () => {

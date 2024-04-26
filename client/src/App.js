@@ -8,7 +8,10 @@ function App() {
   useEffect(() => {
     fetch("/api/map-data") // Ensure your server and endpoint are correctly set up to respond to this route
       .then((response) => response.json())
-      .then((data) => setMarkersData(data))
+      .then((data) => {
+        console.log("Fetched marker data:", data);
+        setMarkersData(data);
+      })
       .catch((error) => console.error("Error fetching marker data:", error));
   }, []);
 

@@ -18,20 +18,29 @@ const getGoogleMapsData = async (location) => {
 
 router.get("/map-data", async (req, res) => {
   const locations = [
-    "43.67131,-79.34668",
-    "43.66127,-79.33866",
-    "43.66459,-79.32523",
+    {
+      coords: "43.67131,-79.34668",
+      name: "Riverdale Perk Cafe",
+      stars: "4 Stars",
+    },
+    {
+      coords: "43.66127,-79.33866",
+      name: "Leslie's Sandwich Room",
+      stars: "5 Stars",
+    },
+    { coords: "43.66459,-79.32523", name: "Lambo's Deli", stars: "5 Stars" },
   ];
 
   try {
     const markersData = await Promise.all(
       locations.map(async (location) => {
-        const data = await getGoogleMapsData(location);
+        const data = await getGoogleMapsData(location.coords);
         const result = data.results[0];
+        console.log(result);
         return {
           location: result.geometry.location,
           icon: "https://img.icons8.com/nolan/marker.png",
-          content: `<h2>${result.formatted_address}</h2><p>5 stars</p>`,
+          content: `<h2>${location.name}</h2><p>${result.formatted_address}</p><p>${location.stars}</p>`,
         };
       })
     );
