@@ -1,0 +1,17 @@
+/* App.css */
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 60px;
+  padding: 20px;
+  color: white;
+  font-size: calc(10px + 2vmin);
+}
+
+#map {
+  height: 500px; /* Set your desired height */
+  width: 100%; /* Ensure it's effectively visible */
+}
