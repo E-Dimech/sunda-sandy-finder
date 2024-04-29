@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Hero from "./components/Hero";
 import MapComponent from "./components/MapComponent";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [markersData, setMarkersData] = useState([]);
