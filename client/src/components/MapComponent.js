@@ -31,8 +31,8 @@ const MapComponent = ({ markersData }) => {
     if (isMapLoaded) {
       // Only attempt to use google.maps objects if the script is loaded
       const map = new window.google.maps.Map(mapRef.current, {
-        center: { lat: 43.6532, lng: -79.3832 }, // Toronto
-        zoom: 13,
+        center: { lat: 43.66081, lng: -79.35959 }, // Toronto
+        zoom: 14,
       });
 
       // Place markers
@@ -55,7 +55,13 @@ const MapComponent = ({ markersData }) => {
     }
   }, [isMapLoaded, markersData]); // React on changes to isMapLoaded or markersData
 
-  return <div ref={mapRef} style={{ height: "500px", width: "100%" }} />;
+  return (
+    <div
+      ref={mapRef}
+      className="map border border-dark border-4 col-md-9 mx-auto"
+      style={{ height: "500px" }}
+    />
+  );
 };
 
 export default MapComponent;
