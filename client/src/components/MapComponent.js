@@ -2,40 +2,33 @@ import React, { useEffect, useRef, useState } from "react";
 
 const MapComponent = ({ markersData }) => {
   const mapRef = useRef(null);
-  const [isMapLoaded, setMapLoaded] = useState(false); // State to track if the map script is loaded
+  const [map, setMap] = useState(null);
 
-  // Dynamically load the Google Maps script
+  // Dynamically load the Google Maps script and initialize the map
   useEffect(() => {
-    const loadGoogleMapScript = () => {
-      if (window.google && window.google.maps) {
-        // Check if script is already loaded
-        setMapLoaded(true);
-        return;
-      }
+    const initializeGoogleMap = () => {
+      const map = new window.google.maps.Map(mapRef.current, {
+        center: { lat: 43.66081, lng: -79.35959 },
+        zoom: 14,
+      });
+      setMap(map);
+    };
 
+    if (window.google && window.google.maps) {
+      initializeGoogleMap();
+    } else {
       const script = document.createElement("script");
-      script.src = "https://maps.googleapis.com/maps/api/js?key=xxxxxxxxxx";
+      script.src = "https://maps.googleapis.com/maps/api/js?key=xxxxxxxxx";
       script.async = true;
       script.defer = true;
       document.head.appendChild(script);
-      script.onload = () => {
-        setMapLoaded(true); // Set map as loaded when script is done loading
-      };
-    };
-
-    loadGoogleMapScript();
+      script.onload = initializeGoogleMap;
+    }
   }, []);
 
-  // Initialize the map and place markers after the script is loaded
+  // Place markers after the map is initialized and markersData is available
   useEffect(() => {
-    if (isMapLoaded) {
-      // Only attempt to use google.maps objects if the script is loaded
-      const map = new window.google.maps.Map(mapRef.current, {
-        center: { lat: 43.66081, lng: -79.35959 }, // Toronto
-        zoom: 14,
-      });
-
-      // Place markers
+    if (map && markersData.length) {
       markersData.forEach((marker) => {
         const mapMarker = new window.google.maps.Marker({
           position: marker.location,
@@ -53,7 +46,33 @@ const MapComponent = ({ markersData }) => {
         mapMarker.addListener("mouseout", () => infoWindow.close());
       });
     }
-  }, [isMapLoaded, markersData]); // React on changes to isMapLoaded or markersData
+  }, [map, markersData]);
+
+  // Handle geolocation for the user's current position
+  useEffect(() => {
+    if (map) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const currentPosition = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          new window.google.maps.Marker({
+            position: currentPosition,
+            map: map,
+            title: "Your Location",
+            icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+          });
+
+          map.setCenter(currentPosition);
+        },
+        () => {
+          alert("Error: The Geolocation service failed.");
+        }
+      );
+    }
+  }, [map]);
 
   return (
     <div
