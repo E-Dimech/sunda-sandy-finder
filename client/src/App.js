@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Hero from "./components/Hero";
 import MapComponent from "./components/MapComponent";
 import "./App.css";
 
@@ -17,9 +18,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Sundays Are For Sandys</h1>
-      </header>
+      <Hero />
       <MapComponent markersData={markersData} />
     </div>
   );
